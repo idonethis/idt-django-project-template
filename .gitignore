@@ -1,0 +1,28 @@
+# Python bytecode:
+*.py[co]
+*.egg*
+
+# Logs:
+*.log
+
+# foreman (heroku) environment variables
+.env
+
+# vagrant VM
+.vagrant
+
+# Linux Editors
+*~
+\#*\#
+/.emacs.desktop
+/.emacs.desktop.lock
+.elc
+auto-save-list
+tramp
+.\#*
+*.swp
+*.swo
+
+# Mac
+.DS_Store
+._*

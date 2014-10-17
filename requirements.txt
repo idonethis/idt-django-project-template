@@ -1,0 +1,21 @@
+# basics
+Django==1.7
+django-model-utils==2.2
+psycopg2==2.5.4
+requests==2.4.3
+simplejson==3.6.4
+sqlparse==0.1.13
+static3==0.5.1
+wsgiref==0.1.2
+
+# dev niceties
+ipython==2.3.0
+django-debug-toolbar==1.2.1
+
+# testing
+coverage==3.7.1
+
+# production
+dj-database-url==0.3.0
+dj-static==0.0.6
+gunicorn==19.1.1
