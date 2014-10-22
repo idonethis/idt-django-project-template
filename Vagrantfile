@@ -52,7 +52,8 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     # You can add other folders here in the same format.
     # nfs with fsc mount option improves performance, which is noticeable on git
     # commands. This is important since the prompt runs git status (~1.5s -> 0.4s)
-    config.vm.synced_folder "./", "/home/vagrant/{{ project_name }}/", type: "nfs", mount_options: ['rw', 'vers=3', 'tcp', 'fsc']
+    # config.vm.synced_folder "./", "/home/vagrant/{{ project_name }}/", type: "nfs", mount_options: ['rw', 'vers=3', 'tcp', 'fsc']
+    config.vm.synced_folder "./", "/home/vagrant/{{ project_name }}/", type: "rsync"
 
     # Provider-specific configuration so you can fine-tune various
     # backing providers for Vagrant. These expose provider-specific options.
