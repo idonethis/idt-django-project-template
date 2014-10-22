@@ -1,23 +1,37 @@
 """Common settings and globals."""
 
+import os
+import sys
 
-from os.path import abspath, basename, dirname, join, normpath
-from sys import path
+
+def get_env_setting(setting, default=None):
+    """ Get the environment setting or return exception """
+    try:
+        return os.environ[setting]
+    except KeyError:
+        if default is not None:
+            return default
+        # Normally you should not import ANYTHING from Django directly
+        # into your settings, but ImproperlyConfigured is an exception.
+        from django.core.exceptions import ImproperlyConfigured
+
+        error_msg = "Set the %s env variable" % setting
+        raise ImproperlyConfigured(error_msg)
 
 
 ########## PATH CONFIGURATION
 # Absolute filesystem path to the Django project directory:
-DJANGO_ROOT = dirname(dirname(abspath(__file__)))
+DJANGO_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # Absolute filesystem path to the top-level project folder:
-SITE_ROOT = dirname(DJANGO_ROOT)
+SITE_ROOT = os.path.dirname(DJANGO_ROOT)
 
 # Site name:
-SITE_NAME = basename(DJANGO_ROOT)
+SITE_NAME = os.path.basename(DJANGO_ROOT)
 
 # Add our project to our pythonpath, this way we don't need to type our project
 # name in our dotted import paths:
-path.append(DJANGO_ROOT)
+sys.path.append(DJANGO_ROOT)
 ########## END PATH CONFIGURATION
 
 
@@ -79,7 +93,7 @@ USE_TZ = True
 
 ########## MEDIA CONFIGURATION
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#media-root
-MEDIA_ROOT = normpath(join(SITE_ROOT, 'media'))
+MEDIA_ROOT = os.path.normpath(os.path.join(SITE_ROOT, 'media'))
 
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#media-url
 MEDIA_URL = '/media/'
@@ -88,14 +102,14 @@ MEDIA_URL = '/media/'
 
 ########## STATIC FILE CONFIGURATION
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#static-root
-STATIC_ROOT = normpath(join(SITE_ROOT, 'assets'))
+STATIC_ROOT = os.path.normpath(os.path.join(SITE_ROOT, 'assets'))
 
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#static-url
 STATIC_URL = '/static/'
 
 # See: https://docs.djangoproject.com/en/dev/ref/contrib/staticfiles/#std:setting-STATICFILES_DIRS
 STATICFILES_DIRS = (
-    normpath(join(SITE_ROOT, 'static')),
+    os.path.normpath(os.path.join(SITE_ROOT, 'static')),
 )
 
 # See: https://docs.djangoproject.com/en/dev/ref/contrib/staticfiles/#staticfiles-finders
@@ -123,7 +137,7 @@ ALLOWED_HOSTS = []
 ########## FIXTURE CONFIGURATION
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#std:setting-FIXTURE_DIRS
 FIXTURE_DIRS = (
-    normpath(join(SITE_ROOT, 'fixtures')),
+    os.path.normpath(os.path.join(SITE_ROOT, 'fixtures')),
 )
 ########## END FIXTURE CONFIGURATION
 
@@ -149,7 +163,7 @@ TEMPLATE_LOADERS = (
 
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#template-dirs
 TEMPLATE_DIRS = (
-    normpath(join(SITE_ROOT, 'templates')),
+    os.path.normpath(os.path.join(SITE_ROOT, 'templates')),
 )
 ########## END TEMPLATE CONFIGURATION
 
