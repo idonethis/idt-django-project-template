@@ -37,6 +37,7 @@ install_apt_packages() {
         g++ make nodejs libfontconfig # the nodejs package includes npm and nodejs-dev, libfontconfig is a dependency of phantomjs
         ruby-compass libfssm-ruby
         rabbitmq-server libxml2-dev libxslt-dev
+        ruby-json # for heroku toolbelt to not throw warnings about a more efficient json library
     )
     apt-get install -y ${packages[*]}
 }
