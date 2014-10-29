@@ -31,7 +31,10 @@ install_heroku_toolbelt() {
     # without these using foreman to run the webserver throws an error, seems like a bug on their side:
     sudo apt-get install -y ruby-rvm
     sudo gem install foreman
+    # e.g. for re-deploying without pushing
     heroku plugins:install https://github.com/heroku/heroku-repo.git
+    # for reading and writing heroku environment variables to / from an env file
+    heroku plugins:install https://github.com/ddollar/heroku-config.git
 }
 
 init_db() {
