@@ -5,7 +5,7 @@ set -e
 main() {
     install_oh_my_zsh
     config_virtualenv
-    install_heroku_toolbelt
+    config_heroku
     init_db
 }
 
@@ -26,7 +26,7 @@ config_virtualenv() {
     $_pip install -r {{ project_name }}/requirements.txt
 }
 
-install_heroku_toolbelt() {
+config_heroku() {
     wget -qO- https://toolbelt.heroku.com/install-ubuntu.sh | sh
     # without these using foreman to run the webserver throws an error, seems like a bug on their side:
     sudo apt-get install -y ruby-rvm
@@ -36,6 +36,7 @@ install_heroku_toolbelt() {
     # for reading and writing heroku environment variables to / from an env file
     heroku plugins:install https://github.com/ddollar/heroku-config.git
     heroku plugins:install git://github.com/heroku/heroku-pg-extras.git
+    cp env.default .env
 }
 
 init_db() {
