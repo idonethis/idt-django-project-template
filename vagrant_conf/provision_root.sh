@@ -72,7 +72,7 @@ config_postgres() {
     pg_dropcluster --stop 9.3 main
     pg_createcluster --start --encoding=UTF8 --locale=en_US.utf8 9.3 main
     sudo -u postgres createuser -drsw vagrant
-    sudo -u vagrant createdb idonethis-dev
+    sudo -u vagrant createdb {{ project_name }}-dev
 }
 
 install_coffee() {

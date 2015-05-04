@@ -5,7 +5,7 @@ set -e
 main() {
     install_oh_my_zsh
     config_virtualenv
-    install_heroku_toolbelt
+    config_heroku
     init_db
     compile_sass
 }
@@ -16,27 +16,24 @@ install_oh_my_zsh() {
     else
         git -C ~/.oh-my-zsh pull
     fi
-    ln -sf /home/vagrant/idonethis/vagrant_conf/user/ysrz.zsh-theme /home/vagrant/.oh-my-zsh/themes/ysrz.zsh-theme
-    ln -sf /home/vagrant/idonethis/vagrant_conf/user/dot.zshrc /home/vagrant/.zshrc
+    ln -sf /home/vagrant/{{ project_name }}/vagrant_conf/user/ysrz.zsh-theme /home/vagrant/.oh-my-zsh/themes/ysrz.zsh-theme
+    ln -sf /home/vagrant/{{ project_name }}/vagrant_conf/user/dot.zshrc /home/vagrant/.zshrc
 }
 
 config_virtualenv() {
     source /usr/share/virtualenvwrapper/virtualenvwrapper.sh
-	[ ! -d /home/vagrant/.virtualenvs/idonethis ] && mkvirtualenv idonethis &&
-    _pip=/home/vagrant/.virtualenvs/idonethis/bin/pip
-    $_pip install -r idonethis/deploy/requirements.txt
+	[ ! -d /home/vagrant/.virtualenvs/{{ project_name }} ] && mkvirtualenv {{ project_name }} &&
+    _pip=/home/vagrant/.virtualenvs/{{ project_name }}/bin/pip
+    $_pip install -r {{ project_name }}/requirements.txt
 }
 
 init_db() {
-    cd ~/idonethis
-    _python=/home/vagrant/.virtualenvs/idonethis/bin/python
-    foreman run $_python manage.py migrate
-    foreman run $_python manage.py dump_team_data --database=readonly witc
-    foreman run $_python manage.py loaddata witc_team_data.json
-    rm witc_team_data.json
+    cd ~/{{ project_name }}
+    _python=/home/vagrant/.virtualenvs/{{ project_name }}/bin/python
+    foreman run $_python {{ project_name }}/manage.py migrate
 }
 
-install_heroku_toolbelt() {
+config_heroku() {
     wget -qO- https://toolbelt.heroku.com/install-ubuntu.sh | sh
     # without these using foreman to run the webserver throws an error, seems like a bug on their side:
     sudo gem install foreman
@@ -45,11 +42,6 @@ install_heroku_toolbelt() {
     # for reading and writing heroku environment variables to / from an env file
     heroku plugins:install https://github.com/ddollar/heroku-config.git
     heroku plugins:install git://github.com/heroku/heroku-pg-extras.git
-}
-
-compile_sass(){
-    cd ~/idonethis
-    compass compile
 }
 
 # sourcing this script as "source vagrant_conf/provision_user.sh --source-only" will
