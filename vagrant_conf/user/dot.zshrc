@@ -41,10 +41,10 @@ alias devserver='foreman start web --procfile=Procfile.dev'
 
 alias manage.py='foreman run python manage.py'
 
-alias devshell='foreman run python idonethis/manage.py shell_plus'
-alias devdb='foreman run python idonethis/manage.py dbshell'
+alias devshell='foreman run python {{ project_name }}/manage.py shell_plus'
+alias devdb='foreman run python {{ project_name }}/manage.py dbshell'
 alias migrate='manage.py migrate'
-alias resetdb="dropdb idonethis-dev && createdb idonethis-dev && manage.py syncdb && manage.py migrate"
+alias resetdb="dropdb {{ project_name }}-dev && createdb {{ project_name }}-dev && manage.py syncdb && manage.py migrate"
 alias runtest='foreman run --env env.test python manage.py test'
 alias runtests='foreman run --env env.test python manage.py runtests'
 
@@ -82,10 +82,10 @@ man() {
 export PATH="/usr/local/heroku/bin:$PATH"
 
 export PIP_DOWNLOAD_CACHE=$HOME/.pip_download_cache
-export PYTHONPATH='/home/vagrant/idonethis/idonethis/'
+export PYTHONPATH='/home/vagrant/{{ project_name }}/{{ project_name }}/'
 
 export LC_ALL="en_US.UTF-8"
 export LANG="en_US.UTF-8"
 
-workon idonethis
-cd idonethis
+workon {{ project_name }}
+cd {{ project_name }}
