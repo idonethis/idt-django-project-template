@@ -29,20 +29,63 @@ plugins=(git)
 
 source $ZSH/oh-my-zsh.sh
 
-source /etc/bash_completion.d/virtualenvwrapper
+source /usr/share/virtualenvwrapper/virtualenvwrapper.sh
 
+## command aliases
 alias ll='ls -lh'
 alias rmpyc='find . -name "*.pyc" -delete'
 alias pygrep='grep -Rn --include="*.py" --exclude="*.pyc"'
-alias resetdb="dropdb {{ project_name }}-dev && createdb {{ project_name }}-dev && ./manage.py migrate"
-alias devserver="foreman start -f Procfile.dev"
-alias devshell="foreman run python {{ project_name }}/manage.py shell -f Procfile.dev"
-alias test="./manage.py test"
+
+alias devcelery='foreman start worker --procfile=Procfile.dev'
+alias devserver='foreman start web --procfile=Procfile.dev'
+
+alias manage.py='foreman run python manage.py'
+
+alias devshell='foreman run python idonethis/manage.py shell_plus'
+alias devdb='foreman run python idonethis/manage.py dbshell'
+alias migrate='manage.py migrate'
+alias resetdb="dropdb idonethis-dev && createdb idonethis-dev && manage.py syncdb && manage.py migrate"
+alias runtest='foreman run --env env.test python manage.py test'
+alias runtests='foreman run --env env.test python manage.py runtests'
+
+alias prodshell='heroku run python manage.py shell_plus'
+alias proddb='heroku pg:psql'
+
+
+## command specific history search
+### emacs bindings
+bindkey "^[[A" history-beginning-search-backward
+bindkey "^[[B" history-beginning-search-forward
+### vim bindings
+bindkey -a k history-beginning-search-backward
+bindkey -a j history-beginning-search-forward
+
+## activate vi-mode with annoying emacs brethren
+alias vimode='source $ZSH/plugins/vi-mode/vi-mode.plugin.zsh'
+
+## man page color and search hilighting
+export PAGER="less"
+man() {
+	env \
+		LESS_TERMCAP_mb=$(printf "\e[1;31m") \
+		LESS_TERMCAP_md=$(printf "\e[1;31m") \
+		LESS_TERMCAP_me=$(printf "\e[0m") \
+		LESS_TERMCAP_se=$(printf "\e[0m") \
+		LESS_TERMCAP_so=$(printf "\e[1;44;33m") \
+		LESS_TERMCAP_ue=$(printf "\e[0m") \
+		LESS_TERMCAP_us=$(printf "\e[1;32m") \
+		man "$@"
+}
+
 
 ### Added by the Heroku Toolbelt
 export PATH="/usr/local/heroku/bin:$PATH"
 
 export PIP_DOWNLOAD_CACHE=$HOME/.pip_download_cache
+export PYTHONPATH='/home/vagrant/idonethis/idonethis/'
 
-workon {{ project_name }}
-cd {{ project_name }}
+export LC_ALL="en_US.UTF-8"
+export LANG="en_US.UTF-8"
+
+workon idonethis
+cd idonethis
