@@ -1,5 +1,5 @@
 # basics
-Django==1.7
+Django==1.8
 django-model-utils==2.2
 psycopg2==2.5.4
 requests==2.4.3
